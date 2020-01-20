@@ -46,7 +46,7 @@ export default class CachedImage extends Component {
     /**
      * check if a url is cached
      */
-    static isUrlCached = (url: string, success: Function, failure: Function) => {
+    static isUrlCached = (url, success, failure) => {
         const cacheFile = _getCacheFilename(url);
         RNFetchBlob.fs.exists(cacheFile)
             .then((exists) => {
@@ -72,7 +72,7 @@ export default class CachedImage extends Component {
      * @param success callback (width,height)=>{}
      * @param failure callback (error:string)=>{}
      */
-    static getSize = (url: string, success: Function, failure: Function) => {
+    static getSize = (url, success, failure) => {
 
         CachedImage.prefetch(url, 0,
             (cacheFile) => {
@@ -97,7 +97,7 @@ export default class CachedImage extends Component {
      * @param success callback (cacheFile:string)=>{}
      * @param failure callback (error:string)=>{}
      */
-    static prefetch = (url: string, expiration: number, success: Function, failure: Function) => {
+    static prefetch = (url, expiration, success, failure) => {
 
         // source invalidate
         if (!url || url.toString() !== url) {
@@ -128,6 +128,8 @@ export default class CachedImage extends Component {
         this.state = {
             source: null,
         };
+
+        this._headers = props.headers;
 
         this._useDefaultSource = false;
         this._downloading = false;
@@ -240,7 +242,7 @@ function _getCacheFilename(url) {
  * @param success callback (cacheFile:string)=>{}
  * @param failure callback (error:string)=>{}
  */
-async function _saveCacheFile(url: string, success: Function, failure: Function) {
+async function _saveCacheFile(url, success, failure) {
 
     try {
         const isNetwork = !!(url && url.match(/^https?:\/\//));
@@ -256,7 +258,8 @@ async function _saveCacheFile(url: string, success: Function, failure: Function)
             })
                 .fetch(
                     'GET',
-                    url
+                    url,
+                    this._headers
                 )
                 .then(async (res) => {
 
