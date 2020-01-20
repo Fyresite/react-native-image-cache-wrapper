@@ -129,7 +129,7 @@ export default class CachedImage extends Component {
             source: null,
         };
 
-        this._headers = props.headers;
+        this._headers = props.source.headers;
 
         this._useDefaultSource = false;
         this._downloading = false;
