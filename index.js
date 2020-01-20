@@ -129,7 +129,7 @@ export default class CachedImage extends Component {
             source: null,
         };
 
-        this._headers = props.source.headers;
+        this._headers = props.source.headers || {};
 
         this._useDefaultSource = false;
         this._downloading = false;
@@ -175,7 +175,7 @@ export default class CachedImage extends Component {
         if (this.state.source) {
 
             const renderImage = (props, children) => (children != null ?
-                <ImageBackground {...props}>{children}</ImageBackground> :
+                <ImageBackground resizeMode={"cover"} {...props} >{children}</ImageBackground> :
                 <Image {...props}/>);
 
             const result = renderImage({
